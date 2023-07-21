@@ -36,16 +36,32 @@ class EloquentNewsRepository implements NewsRepositoryInterface
         return News::create($data);
     }
 
-    public function update(int $id, array $data)
+    public function update(string $uuid, array $data)
     {
-        $news = News::findOrFail($id);
-        $news->update($data);
+        $news = News::where('uuid', $uuid)->first();
+
+        /**Check Jika Gambar Berubah */
+        if (array_key_exists('image', $data)) {
+            $image = new ImageUpload($data['image']);
+            $news["image"] = $image->save("photo/news");
+        }
+
+        $slug = new SlugGenerator("beritas", "slug", $data['title']);
+        $news->title = $data['title'];
+        $news->content = $data['content'];
+        $news->slug = $slug->getSlug();
+        $news->save();
         return $news;
     }
 
-    public function delete(int $id)
+    public function delete(string $uuid)
     {
-        $news = News::findOrFail($id);
-        $news->delete();
+        News::where('uuid', $uuid)->update([
+            'deleted_by_id' => auth()->user()->id,
+            'deleted_at' => now()
+        ]);
+        $news = News::where('uuid', $uuid)->withTrashed()->first();
+
+        return $news;
     }
 }

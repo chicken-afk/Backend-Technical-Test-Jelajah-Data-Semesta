@@ -8,6 +8,7 @@ use App\Http\Resources\NewsResource;
 use App\Models\Berita;
 use App\Repositories\NewsRepositoryInterface;
 use App\Http\Requests\StoreNewsRequest;
+use App\Http\Requests\UpdateBeritaRequest;
 
 class NewsController extends Controller
 {
@@ -54,9 +55,9 @@ class NewsController extends Controller
      */
     public function show($slug)
     {
-        return (new NewsResource(true, 'Success Store News', $this->newsRepository->find($slug)))
+        return (new NewsResource(true, 'Success Show News', $this->newsRepository->find($slug)))
             ->response()
-            ->setStatusCode(201);
+            ->setStatusCode(200);
     }
 
     /**
@@ -66,9 +67,11 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateBeritaRequest $request, $uuid)
     {
-        //
+        return (new NewsResource(true, 'Success Update News', $this->newsRepository->update($uuid, $request->all())))
+            ->response()
+            ->setStatusCode(200);
     }
 
     /**
@@ -77,8 +80,10 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($uuid)
     {
-        //
+        return (new NewsResource(true, 'Success Delete News', $this->newsRepository->delete($uuid)))
+            ->response()
+            ->setStatusCode(200);
     }
 }
