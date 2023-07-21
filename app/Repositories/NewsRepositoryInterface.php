@@ -8,7 +8,7 @@ interface NewsRepositoryInterface
 {
     public function all();
 
-    public function find(int $uuid);
+    public function find(string $slug);
 
     public function create(array $data);
 

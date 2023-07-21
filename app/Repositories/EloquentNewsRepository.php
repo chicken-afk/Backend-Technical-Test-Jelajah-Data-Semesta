@@ -12,12 +12,12 @@ class EloquentNewsRepository implements NewsRepositoryInterface
 {
     public function all()
     {
-        return News::paginate(20);
+        return News::orderBy('id', 'desc')->paginate(10);
     }
 
-    public function find(int $uuid)
+    public function find(string $slug)
     {
-        return News::where('uuid', $uuid)->with('comments')->first();
+        return News::where('slug', $slug)->with('comments')->first();
     }
 
     public function create(array $data)
