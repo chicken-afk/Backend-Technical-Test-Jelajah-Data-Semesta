@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,12 @@ use App\Http\Controllers\AuthController;
 
 Route::group(['prefix' => 'v1'], function () {
     Route::post('login', [AuthController::class, 'login']);
-});
 
-Route::middleware(['auth:api', 'role'])->group(function () { });
+    Route::middleware(['auth:api', 'role'])->group(function () {
+
+        Route::middleware(['scope:admin'])->group(function () {
+            Route::apiResource('news', NewsController::class);
+        });
+        Route::post('news/{uuid}/comment', 'CommentController@store');
+    });
+});
