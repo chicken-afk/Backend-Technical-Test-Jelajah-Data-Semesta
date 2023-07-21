@@ -39,6 +39,13 @@ class EloquentNewsRepository implements NewsRepositoryInterface
     public function update(string $uuid, array $data)
     {
         $news = News::where('uuid', $uuid)->first();
+        // Throw your custom exception here ...
+        // if (!$news) {
+        //     // throw new CustomException("My Custom Message");
+        // }
+        if (!$news) {
+            throw new \App\Exceptions\CustomException("News not found with UUID: $uuid", 404);
+        }
 
         /**Check Jika Gambar Berubah */
         if (array_key_exists('image', $data)) {
@@ -61,6 +68,10 @@ class EloquentNewsRepository implements NewsRepositoryInterface
             'deleted_at' => now()
         ]);
         $news = News::where('uuid', $uuid)->withTrashed()->first();
+
+        if (!$news) {
+            throw new \App\Exceptions\CustomException("News not found with UUID: $uuid", 404);
+        }
 
         return $news;
     }
