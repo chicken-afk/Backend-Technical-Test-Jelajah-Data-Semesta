@@ -5,29 +5,21 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use App\Rules\Base64Image;
 
-class LoginRequest extends FormRequest
+class StoreNewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required',
+            'title' => 'required',
+            'image' => ['required', new Base64Image],
+            'content' => 'required',
         ];
     }
 
@@ -35,13 +27,9 @@ class LoginRequest extends FormRequest
     {
 
         throw new HttpResponseException(response()->json([
-
             'success' => false,
-
             'message' => 'Kesalahan validasi',
-
             'data' => $validator->errors()
-
         ], 422));
     }
 
@@ -49,13 +37,10 @@ class LoginRequest extends FormRequest
 
     public function messages()
     {
-
         return [
-
-            'email.required' => 'Email Wajib Di isi',
-
-            'password.required' => 'Password Wajib Di isi'
-
+            'title.required' => 'Judul Wajib Di isi',
+            'image.required' => 'Image Wajib Di isi',
+            'content.required' => 'Content Wajib Di isi',
         ];
     }
 }
