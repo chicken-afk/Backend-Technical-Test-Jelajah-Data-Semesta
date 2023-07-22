@@ -43,9 +43,7 @@ class EloquentNewsRepository implements NewsRepositoryInterface
         // if (!$news) {
         //     // throw new CustomException("My Custom Message");
         // }
-        if (!$news) {
-            throw new \App\Exceptions\CustomException("News not found with UUID: $uuid", 404);
-        }
+        if (!$news) throw new \App\Exceptions\CustomException("News not found with UUID: $uuid", 404);
 
         /**Check Jika Gambar Berubah */
         if (array_key_exists('image', $data)) {
@@ -69,9 +67,7 @@ class EloquentNewsRepository implements NewsRepositoryInterface
         ]);
         $news = News::where('uuid', $uuid)->withTrashed()->first();
 
-        if (!$news) {
-            throw new \App\Exceptions\CustomException("News not found with UUID: $uuid", 404);
-        }
+        if (!$news) throw new \App\Exceptions\CustomException("News not found with UUID: $uuid", 404);
 
         return $news;
     }
