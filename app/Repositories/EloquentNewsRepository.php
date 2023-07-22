@@ -7,6 +7,9 @@ use App\Models\Berita as News;
 use Str;
 use App\Services\ImageUpload;
 use App\Services\SlugGenerator;
+use App\Events\CreatedNews;
+use App\Events\UpdatedNews;
+use App\Events\DeletedNews;
 
 class EloquentNewsRepository implements NewsRepositoryInterface
 {
@@ -33,12 +36,19 @@ class EloquentNewsRepository implements NewsRepositoryInterface
         $data['uuid'] = Str::uuid();
         $data['slug'] = $slug->getSlug();
 
-        return News::create($data);
+        $news = News::create($data);
+        /**
+         * Call Event Store NEws
+         */
+        event(new CreatedNews($news));
+
+        return $news;
     }
 
     public function update(string $uuid, array $data)
     {
         $news = News::where('uuid', $uuid)->first();
+        $oldNews = $news;
         // Throw your custom exception here ...
         // if (!$news) {
         //     // throw new CustomException("My Custom Message");
@@ -56,18 +66,24 @@ class EloquentNewsRepository implements NewsRepositoryInterface
         $news->content = $data['content'];
         $news->slug = $slug->getSlug();
         $news->save();
+
+        event(new UpdatedNews($news, $oldNews));
+
         return $news;
     }
 
     public function delete(string $uuid)
     {
+        $news = News::where('uuid', $uuid)->withTrashed()->first();
+
+        if (!$news) throw new \App\Exceptions\CustomException("News not found with UUID: $uuid", 404);
+
         News::where('uuid', $uuid)->update([
             'deleted_by_id' => auth()->user()->id,
             'deleted_at' => now()
         ]);
-        $news = News::where('uuid', $uuid)->withTrashed()->first();
 
-        if (!$news) throw new \App\Exceptions\CustomException("News not found with UUID: $uuid", 404);
+        event(new DeletedNews($news));
 
         return $news;
     }
