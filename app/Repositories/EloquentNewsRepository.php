@@ -20,7 +20,7 @@ class EloquentNewsRepository implements NewsRepositoryInterface
 
     public function find(string $slug)
     {
-        return News::where('slug', $slug)->with('comments')->first();
+        return News::where('slug', $slug)->with('comments.user')->first();
     }
 
     public function create(array $data)

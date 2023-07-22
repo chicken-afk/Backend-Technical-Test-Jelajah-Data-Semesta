@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Redis;
+use App\Models\Comment;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +18,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/test-redis', function () {
+    $redisData = Redis::lrange('news:comments', 0, -1);
+    dd($redisData);
+    foreach ($redisData as $data) {
+        $data = json_decode($data);
+
+        // Simpan data ke dalam tabel Comment
+        Comment::create([
+            'uuid' => $data->uuid,
+            'berita_id' => $data->berita_id,
+            'user_id' => $data->user_id,
+            'comment' => $data->comment
+        ]);
+    }
 });
