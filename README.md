@@ -71,3 +71,32 @@ Selanjutnya, jalankan seeder untuk membuat data users login yang diperlukan:
 <pre>
 php artisan db:seed
 </pre>
+
+### Langkah 7: Generate Passport Key
+Selanjutnya, Jalankan perintah berikut untuk menghasilkan key oauth passport yang diperlukan:
+<pre>
+php artisan passport:install
+</pre>
+atau
+<pre>
+php artisan passport:key
+</pre>
+
+### Langkah 8: Storage
+Selanjutnya, Jalankan perintah berikut untuk membuat storage:
+<pre>
+php artisan storage:link
+</pre>
+
+### Langkah 9: Jalankan Aplikasi
+Sekarang, aplikasi Laravel Anda telah siap untuk dijalankan. Jalankan perintah berikut untuk memulai server lokal:
+<pre>
+php artisan serve
+</pre>
+Anda sekarang dapat mengakses proyek Laravel API Artikel Anda melalui http://localhost:8000 di browser.
+
+## Notes
+Setiap comment yang dikirim oleh user akan masuk ke dalam cache redis, jalankan perintah berikut untuk memasukan data comment ke dalam database
+<pre>
+php artisan schedule:run
+</pre>
