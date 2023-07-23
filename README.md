@@ -25,12 +25,17 @@ Buatlah salinan file .env.example menjadi .env:
 > cp .env.example .env
 
 Kemudian, buka file .env menggunakan teks editor favorit Anda dan konfigurasi pengaturan database:
-`DB_CONNECTION=mysql
+
+<pre>
+```bash
+DB_CONNECTION=mysql
 DB_HOST=nama_host_database
 DB_PORT=3306
 DB_DATABASE=nama_database
 DB_USERNAME=username_database
-DB_PASSWORD=password_database``
+DB_PASSWORD=password_database
+```
+</pre>
 
 Pastikan untuk mengganti nama_host_database, nama_database, username_database, dan password_database sesuai dengan informasi koneksi database Anda.
 
