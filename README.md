@@ -46,4 +46,28 @@ Pastikan untuk mengganti nama_host_database, nama_database, username_database, d
 ### Langkah 4: Konfigurasi Cache Redis
 
 Buka kembali file .env dan tambahkan konfigurasi untuk cache Redis:
->
+<pre>
+CACHE_DRIVER=redis
+REDIS_HOST=nama_host_redis
+REDIS_PASSWORD=password_redis
+REDIS_PORT=6379
+</pre>
+
+Gantilah nama_host_redis dengan alamat host Redis dan password_redis jika Anda mengatur password untuk Redis. Jika Anda menggunakan konfigurasi default Redis, maka REDIS_HOST bisa diset menjadi 127.0.0.1.
+
+### Langkah 5: Generate Key Aplikasi
+Jalankan perintah berikut untuk menghasilkan kunci aplikasi yang diperlukan:
+<pre>
+php artisan key:generate
+</pre>
+
+### Langkah 6: Migrasi Database
+Selanjutnya, jalankan migrasi untuk membuat tabel-tabel yang diperlukan di database:
+<pre>
+php artisan migrate
+</pre>
+
+Selanjutnya, jalankan seeder untuk membuat data users login yang diperlukan:
+<pre>
+php artisan db:seed
+</pre>
