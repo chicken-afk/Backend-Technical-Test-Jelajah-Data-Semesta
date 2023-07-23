@@ -14,27 +14,31 @@ Buka terminal atau command prompt, lalu jalankan perintah berikut untuk meng-clo
 ### Langkah 2: Instal Dependensi
 
 Pindah ke direktori proyek yang telah Anda kloning dengan perintah berikut:
+<pre>
 > cd nama-folder-proyek
+</pre>
 
 Selanjutnya, jalankan perintah berikut untuk menginstal semua dependensi proyek melalui Composer:
+<pre>
 > composer install
+</pre>
 
 ### Langkah 3: Konfigurasi Database
 
 Buatlah salinan file .env.example menjadi .env:
+<pre>
 > cp .env.example .env
+</pre>
 
 Kemudian, buka file .env menggunakan teks editor favorit Anda dan konfigurasi pengaturan database:
 
 <pre>
-```bash
 DB_CONNECTION=mysql
 DB_HOST=nama_host_database
 DB_PORT=3306
 DB_DATABASE=nama_database
 DB_USERNAME=username_database
 DB_PASSWORD=password_database
-```
 </pre>
 
 Pastikan untuk mengganti nama_host_database, nama_database, username_database, dan password_database sesuai dengan informasi koneksi database Anda.
